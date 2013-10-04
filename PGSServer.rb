@@ -1,25 +1,12 @@
 require 'rubygems'
 require 'webrick'
-
-class Player < WEBrick::HTTPServlet::AbstractServlet
-	def do_PUT(request, reponse)
-		play_track(request)
-	end
-
-	def play_track(request)
-		if(requested_track = request.query['query'])
-			puts "playing track #{requested_track}"
-		end
-	end
-end
+require File.dirname(__FILE__) + '/PlayerRoute'
 
 if $0 == __FILE__ then
 	server = WEBrick::HTTPServer.new(:Port=>8000)
-	server.mount "/play", Player
+	server.mount "/play", PlayerRoute
 	trap "INT" do
 		server.shutdown
 	end
 	server.start
 end
-
-
