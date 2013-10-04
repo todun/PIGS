@@ -1,5 +1,7 @@
+# PGSRoutes.rb
 # Routes reponsible for playback controls
 
+# Ask the tuner to play a track based on a query string
 class PlayRoute < WEBrick::HTTPServlet::AbstractServlet
 	def do_PUT(request, reponse)
 		if(requested_track = request.query['query'])
@@ -8,6 +10,7 @@ class PlayRoute < WEBrick::HTTPServlet::AbstractServlet
 	end
 end
 
+# Ask the tuner to execute a playback command
 class ControlsRoute < WEBrick::HTTPServlet::AbstractServlet
 	def do_PUT(request, repsonse)
 		if(control_command = request.query['command'])
