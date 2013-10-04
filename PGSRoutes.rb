@@ -13,15 +13,13 @@ end
 # Ask the tuner to execute a playback command
 class ControlsRoute < WEBrick::HTTPServlet::AbstractServlet
 	def do_PUT(request, repsonse)
+		@commands = {
+			"pause_unpause" => " ",
+			"stop" => "q"
+		}
 		if(control_command = request.query['command'])
-			if control_command == 'pause'
-				puts "pause"
-			elsif control_command == 'stop'
-				puts "stop"
-			elsif control_command == 'resume'
-				puts "resume"
-			elsif control_command == 'restart'
-				puts "restart"
+			if @commands.has_key?(control_command)
+				puts "Executing command #{control_command}"
 			else
 				puts "Unknown command: #{control_command}"
 			end
