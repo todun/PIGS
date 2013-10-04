@@ -22,11 +22,12 @@ child = fork do
   `mplayer -really-quiet "#{url}"`
 end
 
+# I'm pulling a Josh and using commented code as a reference...
 read_io.close
-sleep 10
-write_io.write " "
-sleep 5
-write_io.write " "
+#sleep 10
+#write_io.write " "
+#sleep 5
+#write_io.write " "
 write_io.close
 
 Process.wait child
