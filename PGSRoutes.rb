@@ -33,7 +33,7 @@ class PSGRoute
 			if(tuner_command = request.query['command'])
 				if @commands.has_key?(tuner_command)
 					puts "Executing command #{tuner_command}"
-					@tuner.execute_tuner_command(tuner_command)
+					@tuner.execute_tuner_command(@commands[tuner_command])
 				else
 					puts "Unknown command: #{tuner_command}"
 				end

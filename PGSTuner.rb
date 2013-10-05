@@ -23,13 +23,16 @@ class PGSTuner
 		url = @grooveshark_client.get_song_url(song)
 
 		child = fork do
-		  @write_io.close
-		  STDIN.reopen(@read_io)
-		  `mplayer -really-quiet "#{url}"`
+			puts "child read: #{@read_io} child write: #{@write_io}"
+			@write_io.close
+			STDIN.reopen(@read_io)
+			`mplayer -really-quiet "#{url}"` 
 		end
 	end
 
 	def execute_tuner_command(command)
+		puts "parent read: #{@read_io} parent write: #{@write_io}"
+		puts command
 		@read_io.close
 		@write_io.write "#{command}"
 		@write_io.close
