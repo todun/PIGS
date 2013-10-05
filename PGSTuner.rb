@@ -2,7 +2,6 @@
 # A wrapper around the grooveshark rubygem
 
 require 'grooveshark'
-require 'date'
 
 class PGSTuner
 	def initialize
@@ -12,18 +11,25 @@ class PGSTuner
 	end
 
 	def init_grooveshark
-		@init_date = DateTime.now
+		puts "Initializing new Grooveshark session"
+		@expiration_date = Time.now + (24*60*60)
 		@grooveshark_client = Grooveshark::Client.new
 		@grooveshark_session = @grooveshark_client.session
 	end
 
+	def session_expired?
+		return Time.now > @expiration_date
+	end
+
 	def play_song_for_query(query)
 
-		if !@child.nil? then
-			execute_tuner_command("stop")
-		end
+		# Stop currently playing song
+		execute_tuner_command("stop")
 
-		puts "Playing result for query: #{query}"
+		# Check if we need a new Grooveshark session
+		if session_expired?
+			init_grooveshark
+		end
 
 		query.strip!
 		songs = @grooveshark_client.search_songs(query)
@@ -32,6 +38,8 @@ class PGSTuner
 
 		@child = fork do
 			STDIN.reopen(@read_io)
+			puts "Playing result for query: #{query}"
+			puts "#{url}"
 			`mplayer -really-quiet "#{url}"` 
 		end
 	end
