@@ -1,34 +1,33 @@
-require 'rubygems'
+# PGSTuner.rb
+# A wrapper around the grooveshark rubygem
+
 require 'grooveshark'
+require 'date'
 
-client = Grooveshark::Client.new
-session = client.session
+class PGSTuner
+	def initialize
+		@init_date = DateTime.now
+		@grooveshark_client = Grooveshark::Client.new
+		@grooveshark_session = @grooveshark_client.session
+		@read_io, @write_io = IO.pipe
+	end
 
-search_string = ""
-ARGV.each do |a|
-  search_string = search_string + "#{a} "
+	def play_song_for_query(query)
+		query.strip!
+		songs = @grooveshark_client.search_songs(query)
+		song = songs.first
+		url = @grooveshark_client.get_song_url(song)
+
+		child = fork do
+		  @write_io.close
+		  STDIN.reopen(@read_io)
+		  `mplayer -really-quiet "#{url}"`
+		end
+	end
+
+	def execute_tuner_command(command)
+		@read_io.close
+		@write_io.write "#{command}"
+		@write_io.close
+	end
 end
-search_string.strip!
-
-songs = client.search_songs(search_string)
-song = songs.first
-url = client.get_song_url(song)
-
-read_io, write_io = IO.pipe
-
-child = fork do
-  write_io.close
-  STDIN.reopen(read_io)
-  `mplayer -really-quiet "#{url}"`
-end
-
-# I'm pulling a Josh and using commented code as a reference...
-read_io.close
-#sleep 10
-#write_io.write " "
-#sleep 5
-#write_io.write " "
-write_io.close
-
-Process.wait child
-
