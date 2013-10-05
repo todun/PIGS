@@ -1,15 +1,13 @@
 # PGSRoutes.rb
 # Routes reponsible for playback controls
 
-require File.dirname(__FILE__) + '/PGSTuner'
-
 # Ask the tuner to play a track based on a query string
 class PlayRoute < WEBrick::HTTPServlet::AbstractServlet
 	def do_PUT(request, reponse)
-		if(requested_track = request.query['query'])
+		if(query = request.query['query'])
 			tuner = PGSTuner.new
-			tuner.play_song_for_query(requested_track)
-			puts "playing track #{requested_track}"
+			puts "Playing result for query #{query}"
+			tuner.play_song_for_query(query)
 		end
 	end
 end

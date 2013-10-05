@@ -3,6 +3,7 @@
 
 require 'rubygems'
 require 'webrick'
+require File.dirname(__FILE__) + '/PGSTuner'
 require File.dirname(__FILE__) + '/PGSRoutes'
 
 if ARGV[0] then
@@ -24,6 +25,6 @@ if $0 == __FILE__ then
 	puts "\n===================="
 	puts " * PGSServer running at #{ip} on port #{port}"
 	puts "====================\n\n"
-	
+
 	server.start
 end
