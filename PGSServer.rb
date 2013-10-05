@@ -18,7 +18,7 @@ if $0 == __FILE__ then
 	ip = IPSocket.getaddress(Socket.gethostname)
 	tuner = PGSTuner.new
 	server.mount "/play", PSGRoute::PlayRoute, tuner
-	server.mount "/control", PSGRoute::ControlsRoute
+	server.mount "/control", PSGRoute::ControlsRoute, tuner
 	trap "INT" do
 		server.shutdown
 	end

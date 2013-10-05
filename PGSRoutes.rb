@@ -20,6 +20,11 @@ class PSGRoute
 
 	# Ask the tuner to execute a playback command
 	class ControlsRoute < WEBrick::HTTPServlet::AbstractServlet
+		
+		def initialize server, tuner
+			@tuner = tuner
+		end
+
 		def do_PUT(request, repsonse)
 			@commands = {
 				"pause_unpause" => " ",
@@ -28,6 +33,7 @@ class PSGRoute
 			if(tuner_command = request.query['command'])
 				if @commands.has_key?(tuner_command)
 					puts "Executing command #{tuner_command}"
+					@tuner.execute_tuner_command(tuner_command)
 				else
 					puts "Unknown command: #{tuner_command}"
 				end
