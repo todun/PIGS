@@ -6,10 +6,14 @@ require 'date'
 
 class PGSTuner
 	def initialize
+		init_grooveshark
+		@read_io, @write_io = IO.pipe
+	end
+
+	def init_grooveshark
 		@init_date = DateTime.now
 		@grooveshark_client = Grooveshark::Client.new
 		@grooveshark_session = @grooveshark_client.session
-		@read_io, @write_io = IO.pipe
 	end
 
 	def play_song_for_query(query)
