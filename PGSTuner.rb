@@ -18,10 +18,12 @@ class PGSTuner
 	end
 
 	def play_song_for_query(query)
-		
+
 		if !@child.nil? then
-			execute_tuner_command("q")
+			execute_tuner_command("stop")
 		end
+
+		puts "Playing result for query: #{query}"
 
 		query.strip!
 		songs = @grooveshark_client.search_songs(query)
@@ -35,6 +37,15 @@ class PGSTuner
 	end
 
 	def execute_tuner_command(command)
-		@write_io.write "#{command}"
+		commands = {
+			"pause_unpause" => " ",
+			"stop" => "q"
+		}
+		if commands.has_key?(command)
+			puts "Executing command: #{command}"
+			@write_io.write "#{commands[command]}"
+		else
+			puts "Unknown command: #{command}"
+		end
 	end
 end

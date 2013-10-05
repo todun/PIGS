@@ -12,7 +12,6 @@ class PSGRoute
 
 		def do_PUT(request, reponse)
 			if(query = request.query['query'])
-				puts "Playing result for query #{query}"
 				@tuner.play_song_for_query(query)
 			end
 		end
@@ -26,17 +25,8 @@ class PSGRoute
 		end
 
 		def do_PUT(request, repsonse)
-			@commands = {
-				"pause_unpause" => " ",
-				"stop" => "q"
-			}
-			if(tuner_command = request.query['command'])
-				if @commands.has_key?(tuner_command)
-					puts "Executing command #{tuner_command}"
-					@tuner.execute_tuner_command(@commands[tuner_command])
-				else
-					puts "Unknown command: #{tuner_command}"
-				end
+			if(command = request.query['command'])
+				@tuner.execute_tuner_command(command)
 			end
 		end
 	end
