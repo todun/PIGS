@@ -2,12 +2,14 @@
 # A wrapper around the grooveshark rubygem
 
 require 'grooveshark'
+require 'thread'
 
 class PGSTuner
 	def initialize
 		init_grooveshark
 		@read_io, @write_io = IO.pipe
 		@child = nil
+		@mutex = Mutex.new
 	end
 
 	def init_grooveshark
@@ -24,7 +26,9 @@ class PGSTuner
 	def play_song_for_query(query)
 
 		# Stop currently playing song
-		execute_tuner_command("stop")
+		#if @child then 
+		#	execute_tuner_command("stop")
+		#end
 
 		# Check if we need a new Grooveshark session
 		if session_expired?
@@ -36,11 +40,20 @@ class PGSTuner
 		song = songs.first
 		url = @grooveshark_client.get_song_url(song)
 
+		puts "#{@mutex} locked??"
+		if @mutex.locked? then
+			puts "#{@mutex} locked"
+			execute_tuner_command("stop")
+			@mutex.unlock
+		end
+		
 		@child = fork do
-			STDIN.reopen(@read_io)
-			puts "Playing result for query: #{query}"
-			puts "#{url}"
-			`mplayer -really-quiet "#{url}"` 
+			@mutex.synchronize {
+				puts "#{@mutex} is locked"
+				STDIN.reopen(@read_io)
+				puts "Playing song for query: #{query}"
+				`mplayer -really-quiet "#{url}"` 
+			}
 		end
 	end
 
