@@ -14,7 +14,7 @@ end
 
 if $0 == __FILE__ then
 	server = WEBrick::HTTPServer.new(:Port=>port)
-	server.mount "/", WEBrick::HTTPServlet::FileHandler, './Static/'
+	server.mount "/", WEBrick::HTTPServlet::FileHandler, './www/'
 	ip = IPSocket.getaddress(Socket.gethostname)
 	tuner = PGSTuner.new
 	server.mount "/lucky", PSGRoutes::LuckyRoute, tuner
