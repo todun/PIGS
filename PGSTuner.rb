@@ -23,13 +23,19 @@ class PGSTuner
 		return Time.now > @expiration_date
 	end
 
-	def play_song_for_query(query)
+	def play_song(song)
+		url = @grooveshark_client.get_song_url(song)
+		@child = fork do
+			STDIN.reopen(@read_io)
+			puts "Playing song: #{song.artist} - #{song.name}"
+			`mplayer -really-quiet "#{url}"`
+			puts "automatic unlock of #{@mutex}"
+			@mutex.unlock
+		end
+	end
 
-		# Stop currently playing song
-		#if @child then 
-		#	execute_tuner_command("stop")
-		#end
-
+	def im_feeling_lucky(query)
+		puts @mutex.locked?
 		# Check if we need a new Grooveshark session
 		if session_expired?
 			init_grooveshark
@@ -38,22 +44,16 @@ class PGSTuner
 		query.strip!
 		songs = @grooveshark_client.search_songs(query)
 		song = songs.first
-		url = @grooveshark_client.get_song_url(song)
 
-		puts "#{@mutex} locked??"
 		if @mutex.locked? then
-			puts "#{@mutex} locked"
+			puts "#{@mutex} was locked."
 			execute_tuner_command("stop")
 			@mutex.unlock
 		end
 		
-		@child = fork do
-			@mutex.synchronize {
-				puts "#{@mutex} is locked"
-				STDIN.reopen(@read_io)
-				puts "Playing song for query: #{query}"
-				`mplayer -really-quiet "#{url}"` 
-			}
+		if @mutex.try_lock then
+			puts "got lock #{@mutex}"
+			play_song(song)
 		end
 	end
 

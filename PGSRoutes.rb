@@ -4,7 +4,7 @@
 class PSGRoute
 
 	# Ask the tuner to play a track based on a query string
-	class PlayRoute < WEBrick::HTTPServlet::AbstractServlet
+	class LuckyRoute < WEBrick::HTTPServlet::AbstractServlet
 		
 		def initialize server, tuner
 			@tuner = tuner
@@ -12,7 +12,7 @@ class PSGRoute
 
 		def do_PUT(request, reponse)
 			if(query = request.query['query'])
-				@tuner.play_song_for_query(query)
+				@tuner.im_feeling_lucky(query)
 			end
 		end
 	end
