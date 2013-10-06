@@ -4,7 +4,7 @@
 require 'grooveshark'
 require 'thread'
 
-class PGSTuner
+class PIGSTuner
 	def initialize
 		init_grooveshark
 		@read_io, @write_io = IO.pipe

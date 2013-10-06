@@ -3,8 +3,8 @@
 
 require 'rubygems'
 require 'webrick'
-require File.dirname(__FILE__) + '/PGSTuner'
-require File.dirname(__FILE__) + '/PGSRoutes'
+require File.dirname(__FILE__) + '/PIGSTuner'
+require File.dirname(__FILE__) + '/PIGSRoutes'
 
 if ARGV[0] then
 	port = ARGV[0]
@@ -16,15 +16,15 @@ if $0 == __FILE__ then
 	server = WEBrick::HTTPServer.new(:Port=>port)
 	server.mount "/", WEBrick::HTTPServlet::FileHandler, './www/'
 	ip = IPSocket.getaddress(Socket.gethostname)
-	tuner = PGSTuner.new
-	server.mount "/lucky", PSGRoutes::LuckyRoute, tuner
-	server.mount "/control", PSGRoutes::ControlsRoute, tuner
+	tuner = PIGSTuner.new
+	server.mount "/lucky", PIGSRoutes::LuckyRoute, tuner
+	server.mount "/control", PIGSRoutes::ControlsRoute, tuner
 	trap "INT" do
 		server.shutdown
 	end
 
 	puts "\n===================="
-	puts " * PGSServer running at #{ip} on port #{port}"
+	puts " * PIGSServer running at #{ip} on port #{port}"
 	puts "====================\n\n"
 
 	server.start

@@ -1,7 +1,7 @@
 # PGSRoutes.rb
 # Routes reponsible for playback controls
 
-class PSGRoutes
+class PIGSRoutes
 
 	# Ask the tuner to play a track based on a query string
 	class LuckyRoute < WEBrick::HTTPServlet::AbstractServlet
