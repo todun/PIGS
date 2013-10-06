@@ -17,8 +17,8 @@ if $0 == __FILE__ then
 	server.mount "/", WEBrick::HTTPServlet::FileHandler, './Static/'
 	ip = IPSocket.getaddress(Socket.gethostname)
 	tuner = PGSTuner.new
-	server.mount "/lucky", PSGRoute::LuckyRoute, tuner
-	server.mount "/control", PSGRoute::ControlsRoute, tuner
+	server.mount "/lucky", PSGRoutes::LuckyRoute, tuner
+	server.mount "/control", PSGRoutes::ControlsRoute, tuner
 	trap "INT" do
 		server.shutdown
 	end

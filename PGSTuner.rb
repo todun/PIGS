@@ -41,26 +41,30 @@ class PGSTuner
 			init_grooveshark
 		end
 
+		# Ask Grooveshark for a song
 		query.strip!
 		songs = @grooveshark_client.search_songs(query)
 		song = songs.first
 
+		# If we got a song, play it
 		unless song.nil?
 			if @mutex.locked? then
 				puts "#{@mutex} was locked."
 				execute_tuner_command("stop")
-				@mutex.unlock
 			end
 			
-			if @mutex.try_lock then
+			if @mutex.lock then
 				puts "got lock #{@mutex}"
 				play_song(song)
+				return true
 			end
 		else
 			puts "No results found for #{query}"
+			return false
 		end
 	end
 
+	# Playback controls
 	def execute_tuner_command(command)
 		commands = {
 			"pause_unpause" => " ",
@@ -69,8 +73,10 @@ class PGSTuner
 		if commands.has_key?(command)
 			puts "Executing command: #{command}"
 			@write_io.write "#{commands[command]}"
+			return true
 		else
 			puts "Unknown command: #{command}"
+			return false
 		end
 	end
 end

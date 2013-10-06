@@ -1,7 +1,7 @@
 # PGSRoutes.rb
 # Routes reponsible for playback controls
 
-class PSGRoute
+class PSGRoutes
 
 	# Ask the tuner to play a track based on a query string
 	class LuckyRoute < WEBrick::HTTPServlet::AbstractServlet
@@ -10,9 +10,18 @@ class PSGRoute
 			@tuner = tuner
 		end
 
-		def do_PUT(request, reponse)
-			if(query = request.query['query'])
-				@tuner.im_feeling_lucky(query)
+		def do_POST(request, response)
+			result = false
+			if(request.body)
+				result = @tuner.im_feeling_lucky(request.body)
+			end
+
+			response.status = 200
+			response['Content-Typle'] = "text/plain"
+			if result
+				response.body = "success"
+			else
+				response.body = "failure"
 			end
 		end
 	end
@@ -24,9 +33,18 @@ class PSGRoute
 			@tuner = tuner
 		end
 
-		def do_PUT(request, repsonse)
-			if(command = request.query['command'])
-				@tuner.execute_tuner_command(command)
+		def do_POST(request, response)
+			result = false
+			if(request.body)
+				result = @tuner.execute_tuner_command(request.body)
+			end
+			
+			response.status = 200
+			response['Content-Typle'] = "text/plain"
+			if result
+				response.body = "success"
+			else
+				response.body = "failure"
 			end
 		end
 	end
