@@ -45,15 +45,19 @@ class PGSTuner
 		songs = @grooveshark_client.search_songs(query)
 		song = songs.first
 
-		if @mutex.locked? then
-			puts "#{@mutex} was locked."
-			execute_tuner_command("stop")
-			@mutex.unlock
-		end
-		
-		if @mutex.try_lock then
-			puts "got lock #{@mutex}"
-			play_song(song)
+		unless song.nil?
+			if @mutex.locked? then
+				puts "#{@mutex} was locked."
+				execute_tuner_command("stop")
+				@mutex.unlock
+			end
+			
+			if @mutex.try_lock then
+				puts "got lock #{@mutex}"
+				play_song(song)
+			end
+		else
+			puts "No results found for #{query}"
 		end
 	end
 
