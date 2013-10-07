@@ -35,3 +35,12 @@ body {
 .artist-name {
   font-weight:bold;
 }
+
+.result-info {
+  float:left;
+  width: 80%;
+}
+
+.result-icon {
+  float:right;
+}

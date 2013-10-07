@@ -19,7 +19,7 @@ $(document).ready(function() {
 			type: "POST",
 			contentType: 'text/plain',
 			dataType: 'json',
-			data: $("#txt_input").val(),
+			data: $("#txt_input").val()
 		}).done(
 			searchSuccess
 		).fail(
@@ -35,25 +35,51 @@ $(document).ready(function() {
 
 	};
 
+	function playSuccess(data) {
+		$('.carousel').carousel('prev');
+	};
+
+	function playFailure() {
+		
+	};
+
 	function populateSearchResults() {
 		searchResultsHtml = "";
-		var cap = 4;
+		var cap = 8;
 		if (cap > searchResults.length) {
 			cap = searchResults.length;
 		}
 		for(var i=0; i<cap; i++) {
 			searchResultsHtml += 
-				"<div class='panel panel-default'>"
+				"<div class='panel panel-default result-panel' id='" + searchResults[i].songID + "'>"
 					+ "<div class='panel-body'>"
-			    		+ "<span class='song-name'>" + searchResults[i].songName + "</span>" 
-			    		+ "<br />"
-			    		+ "<span class='artist-name'>" + searchResults[i].artistName + "</span>"
-			    		+ "<span class='glyphicon glyphicon-play'></span>"
+						+ "<div class='result-info'>"
+			    			+ "<span class='song-name'>" + searchResults[i].songName + "</span>" 
+			    			+ "<br />"
+			    			+ "<span class='artist-name'>" + searchResults[i].artistName + "</span>"
+			    		+ "</div>"
+			    		+ "<div class='result-icon'>"
+			    			+ "<br />"
+			    			+ "<span class='glyphicon glyphicon-play'></span>"
+			    		+ "</div>"
 			    	+ "</div>"
 			   + "</div>";
 		}
 			
 		$("#search-results").html(searchResultsHtml);
+		$(".result-panel").on("click", function(event){
+		$.ajax({
+			url: './play',
+			type: "POST",
+			contentType: 'text/plain',
+			dataType: 'json',
+			data: $(this).attr('id')
+			}).done(
+				playSuccess
+			).fail(
+				playFailure
+			);
+		});
 	};
 
 	function searchSuccess(data) {
