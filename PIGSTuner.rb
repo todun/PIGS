@@ -3,6 +3,7 @@
 
 require 'grooveshark'
 require 'thread'
+require 'active_support/all'
 
 class PIGSTuner
 	def initialize
@@ -29,13 +30,23 @@ class PIGSTuner
 			STDIN.reopen(@read_io)
 			puts "Playing song: #{song.artist} - #{song.name}"
 			`mplayer -really-quiet "#{url}"`
-			puts "automatic unlock of #{@mutex}"
 			@mutex.unlock
 		end
 	end
 
+	def search(query)
+		# Check if we need a new Grooveshark session
+		if session_expired?
+			init_grooveshark
+		end
+
+		query.strip!
+		songs = @grooveshark_client.search_songs(query)
+		return songs.to_json
+
+	end
+
 	def im_feeling_lucky(query)
-		puts @mutex.locked?
 		# Check if we need a new Grooveshark session
 		if session_expired?
 			init_grooveshark
@@ -49,12 +60,10 @@ class PIGSTuner
 		# If we got a song, play it
 		unless song.nil?
 			if @mutex.locked? then
-				puts "#{@mutex} was locked."
 				execute_tuner_command("stop")
 			end
 			
 			if @mutex.lock then
-				puts "got lock #{@mutex}"
 				play_song(song)
 				return true
 			end

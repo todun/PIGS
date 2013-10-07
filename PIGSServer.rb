@@ -13,16 +13,27 @@ else
 end
 
 if $0 == __FILE__ then
+
+	# Create the server
 	server = WEBrick::HTTPServer.new(:Port=>port)
-	server.mount "/", WEBrick::HTTPServlet::FileHandler, './www/'
 	ip = IPSocket.getaddress(Socket.gethostname)
+
+	# Create a tuner
 	tuner = PIGSTuner.new
+
+	# Define routes
+	server.mount "/", WEBrick::HTTPServlet::FileHandler, './www/'
 	server.mount "/lucky", PIGSRoutes::LuckyRoute, tuner
 	server.mount "/control", PIGSRoutes::ControlsRoute, tuner
+	server.mount "/search", PIGSRoutes::SearchRoute, tuner
+	server.mount "/play", PIGSRoutes::PlayRoute, tuner
+
+	# Handle interuptions
 	trap "INT" do
 		server.shutdown
 	end
 
+	# Start the server
 	puts "\n===================="
 	puts " * PIGSServer running at #{ip} on port #{port}"
 	puts "====================\n\n"

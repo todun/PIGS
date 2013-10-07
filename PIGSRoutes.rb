@@ -14,14 +14,47 @@ class PIGSRoutes
 			result = false
 			if(request.body)
 				result = @tuner.im_feeling_lucky(request.body)
+
+				response.status = 200
+				response['Content-Type'] = "text/plain"
+				if result
+					response.body = "success"
+				else
+					response.body = "failure"
+				end
+			else
+				response.status = 400
+			end
+		end
+	end
+
+	class PlayRoute < WEBrick::HTTPServlet::AbstractServlet
+
+		def initialize server, tuner
+			@tuner = tuner
+		end
+
+	end
+
+	# Get search results from the tuner
+	class SearchRoute < WEBrick::HTTPServlet::AbstractServlet
+
+		def initialize server, tuner
+			@tuner = tuner
+		end
+
+		def do_POST(request, response)
+			search_results = nil
+			if(request.body)
+				search_results = @tuner.search(request.body)
 			end
 
-			response.status = 200
-			response['Content-Typle'] = "text/plain"
-			if result
-				response.body = "success"
+			unless search_results.nil?
+				response.status = 200
+				response['Content-Type'] = "application/json"
+				response.body = search_results
 			else
-				response.body = "failure"
+				response.status = 400
 			end
 		end
 	end
@@ -39,12 +72,12 @@ class PIGSRoutes
 				result = @tuner.execute_tuner_command(request.body)
 			end
 			
-			response.status = 200
-			response['Content-Typle'] = "text/plain"
 			if result
+				response.status = 200
+				response['Content-Type'] = "text/plain"
 				response.body = "success"
 			else
-				response.body = "failure"
+				response.status = 400
 			end
 		end
 	end
