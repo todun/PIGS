@@ -1,12 +1,14 @@
 $(document).ready(function() {
 	
+	searchResults = [];
+
 	$("#btn_lucky").on("click", function(event){
 		$.ajax({
 			url: './lucky',
 			type: "POST",
 			dataType: 'text/plain',
 			data: $("#txt_input").val(),
-			success: clearInput,
+			success: luckySuccess,
 			error: clearInput
 		});
 	});
@@ -25,10 +27,35 @@ $(document).ready(function() {
 		);
 	});
 
+	$("#btn_back").on("click", function(event){
+		$('.carousel').carousel('prev');
+	});
+
+	function luckySuccess(data) {
+
+	};
+
+	function populateSearchResults() {
+		searchResultsHtml = "";
+		var cap = 5;
+		if (cap > searchResults.length) {
+			cap = searchResults.length;
+		}
+		for(var i=0; i<cap; i++) {
+			searchResultsHtml += "<div class='panel panel-default'><div class='panel-body'>" +
+			    searchResults[i].artistName + " - " + searchResults[i].songName + "</div></div>";
+		}
+			
+		$("#search-results").html(searchResultsHtml);
+	};
+
 	function searchSuccess(data) {
+		searchResults = data;
+		if(searchResults.length > 0) {
+			populateSearchResults();
+			$('.carousel').carousel('next');
+		}
 		clearInput();
-		$('#search-results').html(JSON.stringify(data));
-		$('.carousel').carousel('next');
 	};
 
 	function clearInput() {
