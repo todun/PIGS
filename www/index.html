@@ -26,11 +26,24 @@
 
     <div class="container">
 
-      <div class="form-pigs">
-        <h2 class="form-pigs-heading">Search for music</h2>
-        <input type="text" class="form-control" placeholder="Artist and song" id="txt_input" autofocus>
-        <button class="btn btn-lg btn-primary btn-block" id="btn_search">Search</button>
-        <button class="btn btn-lg btn-primary btn-block" id="btn_lucky">I'm Feeling Lucky</button>
+      <div id="carousel-pigs" class="carousel slide">
+        <div class="carousel-inner">
+
+          <div class="item active">
+            <div class="form-pigs">
+              <h2 class="form-pigs-heading">Search for music</h2>
+              <input type="text" class="form-control" placeholder="Artist and song" id="txt_input" autofocus>
+              <button class="btn btn-lg btn-primary btn-block" id="btn_search">Search</button>
+              <button class="btn btn-lg btn-primary btn-block" id="btn_lucky">I'm Feeling Lucky</button>
+            </div>
+          </div>
+
+          <div class="item">
+            <div id="search-results">
+            </div>
+          </div>
+
+        </div>
       </div>
 
     </div> <!-- /container -->

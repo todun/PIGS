@@ -48,7 +48,7 @@ class PIGSTuner
 	end
 
 	# Search for a Grooveshark track
-	# Returns a JSON array of the results
+	# Returns a JSON array of the results, or nil
 	def search(query)
 		# Check if we need a new Grooveshark session
 		if session_expired?
@@ -79,7 +79,11 @@ class PIGSTuner
 			play_song_with_id(song.id)
 		end
 
-		return song.to_json
+		unless songs.length == 0 then
+			return song.to_json
+		else
+			return nil
+		end
 	end
 
 	# Playback controls

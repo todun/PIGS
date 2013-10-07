@@ -9,6 +9,12 @@ body {
   padding: 15px;
   margin: 0 auto;
 }
+
+#carousel-pigs {
+  max-width: 330px;
+  margin: 0 auto;
+}
+
 .form-pigs .form-signin-pigs,
 
 .form-pigs .form-control {
@@ -26,4 +32,3 @@ body {
 .form-pigs input[type="text"] {
   margin-bottom: 5px;
 }
-
