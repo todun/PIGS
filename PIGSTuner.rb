@@ -29,8 +29,9 @@ class PIGSTuner
 	def play_song_with_id(id)
 		if @mutex.locked? then
 			execute_tuner_command("stop")
+			@mutex.unlock
 		end
-		if @mutex.try_lock then
+		if @mutex.lock then
 			begin
 				url = @grooveshark_client.get_song_url_by_id(id)
 				@child = fork do
