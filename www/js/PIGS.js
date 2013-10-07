@@ -37,13 +37,20 @@ $(document).ready(function() {
 
 	function populateSearchResults() {
 		searchResultsHtml = "";
-		var cap = 5;
+		var cap = 4;
 		if (cap > searchResults.length) {
 			cap = searchResults.length;
 		}
 		for(var i=0; i<cap; i++) {
-			searchResultsHtml += "<div class='panel panel-default'><div class='panel-body'>" +
-			    searchResults[i].artistName + " - " + searchResults[i].songName + "</div></div>";
+			searchResultsHtml += 
+				"<div class='panel panel-default'>"
+					+ "<div class='panel-body'>"
+			    		+ "<span class='song-name'>" + searchResults[i].songName + "</span>" 
+			    		+ "<br />"
+			    		+ "<span class='artist-name'>" + searchResults[i].artistName + "</span>"
+			    		+ "<span class='glyphicon glyphicon-play'></span>"
+			    	+ "</div>"
+			   + "</div>";
 		}
 			
 		$("#search-results").html(searchResultsHtml);
