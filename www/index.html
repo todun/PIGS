@@ -26,17 +26,19 @@
 
     <div class="container">
 
-      <form class="form-pigs">
+      <div class="form-pigs">
         <h2 class="form-pigs-heading">Search for music</h2>
-        <input type="text" class="form-control" placeholder="Artist and song" autofocus>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Search</button>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">I'm Feeling Lucky</button>
-      </form>
+        <input type="text" class="form-control" placeholder="Artist and song" id="txt_input" autofocus>
+        <button class="btn btn-lg btn-primary btn-block" id="btn_search">Search</button>
+        <button class="btn btn-lg btn-primary btn-block" id="btn_lucky">I'm Feeling Lucky</button>
+      </div>
 
     </div> <!-- /container -->
 
 
     <!-- Bootstrap core JavaScript -->
+    <script src="./js/jquery-2.0.3.min.js"></script>
+    <script src="./js/PIGS.js"></script>
     <script src="./js/bootstrap.min.js"></script>
   </body>
 </html>
