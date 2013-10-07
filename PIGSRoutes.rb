@@ -14,14 +14,14 @@ class PIGSRoutes
 			lucky_result = nil
 			if(request.body)
 				lucky_result = @tuner.im_feeling_lucky(request.body)
+			end
 
-				unless lucky_result.nil?
+			unless lucky_result.nil?
 				response.status = 200
 				response['Content-Type'] = "application/json"
 				response.body = lucky_result
-				else
-					response.status = 400
-				end
+			else
+				response.status = 400
 			end
 		end
 	end
@@ -65,15 +65,15 @@ class PIGSRoutes
 		end
 
 		def do_POST(request, response)
-			result = false
+			control_result = nil
 			if(request.body)
-				result = @tuner.execute_tuner_command(request.body)
+				control_result = @tuner.execute_tuner_command(request.body)
 			end
 			
-			if result
+			unless control_result.nil?
 				response.status = 200
-				response['Content-Type'] = "text/plain"
-				response.body = "success"
+				response['Content-Type'] = "application/json"
+				response.body = control_result
 			else
 				response.status = 400
 			end

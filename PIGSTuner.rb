@@ -24,6 +24,7 @@ class PIGSTuner
 		return Time.now > @expiration_date
 	end
 
+	# Asks Grooveshark for a song url and plays it
 	def play_song(song)
 		url = @grooveshark_client.get_song_url(song)
 		@child = fork do
@@ -34,6 +35,8 @@ class PIGSTuner
 		end
 	end
 
+	# Search for a Grooveshark track
+	# Returns a JSON array of the results
 	def search(query)
 		# Check if we need a new Grooveshark session
 		if session_expired?
@@ -46,6 +49,8 @@ class PIGSTuner
 
 	end
 
+	# Searches Grooveshark and plays the first result
+	# Returns JSON object of song playing, or nil
 	def im_feeling_lucky(query)
 		# Check if we need a new Grooveshark session
 		if session_expired?
@@ -69,11 +74,12 @@ class PIGSTuner
 		else
 			puts "No results found for #{query}"
 		end
-		
+
 		return song.to_json
 	end
 
 	# Playback controls
+	# Returns JSON encoded success message
 	def execute_tuner_command(command)
 		commands = {
 			"pause_unpause" => " ",
@@ -82,10 +88,10 @@ class PIGSTuner
 		if commands.has_key?(command)
 			puts "Executing command: #{command}"
 			@write_io.write "#{commands[command]}"
-			return true
+			return {"success" => true}.to_json
 		else
 			puts "Unknown command: #{command}"
-			return false
+			return {"success" => false}.to_json
 		end
 	end
 end
