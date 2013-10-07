@@ -1,4 +1,4 @@
-# PGSRoutes.rb
+# PIGSRoutes.rb
 # Routes reponsible for playback controls
 
 class PIGSRoutes
@@ -11,19 +11,17 @@ class PIGSRoutes
 		end
 
 		def do_POST(request, response)
-			result = false
+			lucky_result = nil
 			if(request.body)
-				result = @tuner.im_feeling_lucky(request.body)
+				lucky_result = @tuner.im_feeling_lucky(request.body)
 
+				unless lucky_result.nil?
 				response.status = 200
-				response['Content-Type'] = "text/plain"
-				if result
-					response.body = "success"
+				response['Content-Type'] = "application/json"
+				response.body = lucky_result
 				else
-					response.body = "failure"
+					response.status = 400
 				end
-			else
-				response.status = 400
 			end
 		end
 	end

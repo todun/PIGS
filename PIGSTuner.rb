@@ -1,4 +1,4 @@
-# PGSTuner.rb
+# PIGSTuner.rb
 # A wrapper around the grooveshark rubygem
 
 require 'grooveshark'
@@ -65,12 +65,12 @@ class PIGSTuner
 			
 			if @mutex.lock then
 				play_song(song)
-				return true
 			end
 		else
 			puts "No results found for #{query}"
-			return false
 		end
+		
+		return song.to_json
 	end
 
 	# Playback controls

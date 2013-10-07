@@ -1,4 +1,4 @@
-# PGSServer.rb
+# PIGSServer.rb
 # Simple HTTP server that routes our PUT requests
 
 require 'rubygems'
