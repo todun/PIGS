@@ -3,7 +3,7 @@
 
 class PIGSRoutes
 
-	# Ask the tuner to play a track based on a query string
+	# Ask the tuner to play a song based on a query string
 	class LuckyRoute < WEBrick::HTTPServlet::AbstractServlet
 		
 		def initialize server, tuner
@@ -26,10 +26,26 @@ class PIGSRoutes
 		end
 	end
 
+	# Ask the tuner to play a song based on an ID
 	class PlayRoute < WEBrick::HTTPServlet::AbstractServlet
 
 		def initialize server, tuner
 			@tuner = tuner
+		end
+
+		def do_POST(request, response)
+			play_result = nil
+			if(request.body)
+				play_result = @tuner.play_song_with_id(request.body)
+			end
+
+			unless play_result.nil?
+				response.status = 200
+				response['Content-Type'] = "application/json"
+				response.body = play_result
+			else
+				response.status = 400
+			end
 		end
 
 	end

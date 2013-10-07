@@ -25,14 +25,24 @@ class PIGSTuner
 	end
 
 	# Asks Grooveshark for a song url and plays it
-	def play_song(song)
-		url = @grooveshark_client.get_song_url(song)
-		@child = fork do
-			STDIN.reopen(@read_io)
-			puts "Playing song: #{song.artist} - #{song.name}"
-			`mplayer -really-quiet "#{url}"`
-			@mutex.unlock
+	def play_song_with_id(id)
+		if @mutex.locked? then
+			execute_tuner_command("stop")
 		end
+		if @mutex.try_lock then
+			begin
+				url = @grooveshark_client.get_song_url_by_id(id)
+				@child = fork do
+					STDIN.reopen(@read_io)
+					`mplayer -really-quiet "#{url}"`
+					@mutex.unlock
+				end
+			rescue Exception
+				return {"success" => false}.to_json
+			end
+			return {"success" => true}.to_json
+		end
+		return {"success" => false}.to_json
 	end
 
 	# Search for a Grooveshark track
@@ -64,15 +74,7 @@ class PIGSTuner
 
 		# If we got a song, play it
 		unless song.nil?
-			if @mutex.locked? then
-				execute_tuner_command("stop")
-			end
-			
-			if @mutex.lock then
-				play_song(song)
-			end
-		else
-			puts "No results found for #{query}"
+			play_song_with_id(song.id)
 		end
 
 		return song.to_json
@@ -86,11 +88,9 @@ class PIGSTuner
 			"stop" => "q"
 		}
 		if commands.has_key?(command)
-			puts "Executing command: #{command}"
 			@write_io.write "#{commands[command]}"
 			return {"success" => true}.to_json
 		else
-			puts "Unknown command: #{command}"
 			return {"success" => false}.to_json
 		end
 	end
