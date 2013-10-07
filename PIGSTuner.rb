@@ -25,6 +25,7 @@ class PIGSTuner
 	end
 
 	# Asks Grooveshark for a song url and plays it
+	# Returns JSON encoded success message
 	def play_song_with_id(id)
 		if @mutex.locked? then
 			execute_tuner_command("stop")
