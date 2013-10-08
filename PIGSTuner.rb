@@ -29,7 +29,11 @@ class PIGSTuner
 	def play_song_with_id(id)
 		if @mutex.locked? then
 			execute_tuner_command("stop")
-			@mutex.unlock
+			begin
+				@mutex.unlock
+			rescue Exception
+				return {"success" => false}.to_json
+			end
 		end
 		if @mutex.lock then
 			begin
@@ -37,8 +41,9 @@ class PIGSTuner
 				@child = fork do
 					STDIN.reopen(@read_io)
 					`mplayer -really-quiet "#{url}"`
-					@mutex.unlock
+					exit
 				end
+				Process.detatch(@child)
 			rescue Exception
 				return {"success" => false}.to_json
 			end
@@ -54,11 +59,19 @@ class PIGSTuner
 		if session_expired?
 			init_grooveshark
 		end
-
 		query.strip!
-		songs = @grooveshark_client.search_songs(query)
-		return songs.to_json
 
+		songs = []
+		begin
+			songs = @grooveshark_client.search_songs(query)
+		rescue Exception
+		end
+
+		unless songs.length == 0
+			return songs.to_json
+		else
+			return nil
+		end
 	end
 
 	# Searches Grooveshark and plays the first result
@@ -68,18 +81,19 @@ class PIGSTuner
 		if session_expired?
 			init_grooveshark
 		end
+		query.strip!
 
 		# Ask Grooveshark for a song
-		query.strip!
-		songs = @grooveshark_client.search_songs(query)
+		sogns = []
+		begin
+			songs = @grooveshark_client.search_songs(query)
+		rescue Exception
+		end
 		song = songs.first
 
 		# If we got a song, play it
 		unless song.nil?
 			play_song_with_id(song.id)
-		end
-
-		unless songs.length == 0 then
 			return song.to_json
 		else
 			return nil
