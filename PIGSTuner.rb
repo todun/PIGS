@@ -29,14 +29,22 @@ class PIGSTuner
 	def play_song_with_id(id)
 		begin
 			@mutex.synchronize do
-				execute_tuner_command("stop")
+				unless @child.nil? then
+					execute_tuner_command("stop")
+				end
+				while !@child.nil? do
+					sleep 1
+				end
 				url = @grooveshark_client.get_song_url_by_id(id)
 				@child = fork do
 					STDIN.reopen(@read_io)
 					`mplayer -really-quiet "#{url}"`
 					exit
 				end
-				Process.detach(@child)
+				Thread.new {
+					Process.waitpid(@child)
+					@child = nil
+				}
 			end
 		rescue Exception
 			return {"success" => false}.to_json
