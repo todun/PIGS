@@ -22,14 +22,14 @@ $(document).ready(function() {
 	};
 	var spinner = new Spinner(opts);
 
-	$("#btn_lucky").on("click", function(event){
+	$("#btn-lucky").on("click", function(event){
 		spinner.spin(document.getElementById('container'));
 		$.ajax({
 			url: './lucky',
 			type: "POST",
 			contentType: 'text/plain',
 			dataType: 'json',
-			data: $("#txt_input").val()
+			data: $("#txt-input").val()
 		}).done(
 			luckySuccess
 		).fail(
@@ -37,14 +37,14 @@ $(document).ready(function() {
 		);
 	});
 
-	$("#btn_search").on("click", function(event){
+	$("#btn-search").on("click", function(event){
 		spinner.spin(document.getElementById('container'));
 		$.ajax({
 			url: './search',
 			type: "POST",
 			contentType: 'text/plain',
 			dataType: 'json',
-			data: $("#txt_input").val()
+			data: $("#txt-input").val()
 		}).done(
 			searchSuccess
 		).fail(
@@ -52,7 +52,7 @@ $(document).ready(function() {
 		);
 	});
 
-	$("#btn_back").on("click", function(event){
+	$("#btn-back").on("click", function(event){
 		$('.carousel').carousel('prev');
 	});
 
@@ -131,7 +131,7 @@ $(document).ready(function() {
 	};
 
 	function clearInput() {
-		$("#txt_input").val("");
+		$("#txt-input").val("");
 	};
 
 	$('.carousel').carousel({
