@@ -58,6 +58,7 @@ $(document).ready(function() {
 
 	function luckySuccess(data) {
 		spinner.stop();
+		clearInput();
 	};
 
 	function luckyFailure() {
