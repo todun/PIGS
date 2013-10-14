@@ -61,7 +61,12 @@ $(document).ready(function() {
 	function luckySuccess(data) {
 		spinner.stop();
 		clearInput();
-		showSuccessBar("Playing: " + data.artistName + " - " + data.songName);
+		if(data != null) {
+			showSuccessBar("Playing: " + data.artistName + " - " + data.songName);
+		}
+		else {
+			showErrorBar("There was an error. Try again.");
+		}
 	};
 
 	function luckyFailure() {
