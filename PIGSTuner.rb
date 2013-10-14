@@ -26,31 +26,6 @@ class PIGSTuner
 
 	# Asks Grooveshark for a song url and plays it
 	# Returns JSON encoded success message
-	# def play_song_with_id(id)
-	# 	if @mutex.locked? then
-	# 		execute_tuner_command("stop")
-	# 		begin
-	# 			@mutex.unlock
-	# 		rescue Exception
-	# 			return {"success" => false}.to_json
-	# 		end
-	# 	end
-	# 	if @mutex.lock then
-	# 		begin
-	# 			url = @grooveshark_client.get_song_url_by_id(id)
-	# 			@child = fork do
-	# 				STDIN.reopen(@read_io)
-	# 				`mplayer -really-quiet "#{url}"`
-	# 				exit
-	# 			end
-	# 			Process.detatch(@child)
-	# 		rescue Exception
-	# 			return {"success" => false}.to_json
-	# 		end
-	# 		return {"success" => true}.to_json
-	# 	end
-	# 	return {"success" => false}.to_json
-	# end
 	def play_song_with_id(id)
 		begin
 			@mutex.synchronize do
@@ -61,7 +36,7 @@ class PIGSTuner
 					`mplayer -really-quiet "#{url}"`
 					exit
 				end
-				Process.detatch(@child)
+				Process.detach(@child)
 			end
 		rescue Exception
 			return {"success" => false}.to_json
