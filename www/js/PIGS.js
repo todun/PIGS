@@ -1,6 +1,8 @@
 $(document).ready(function() {
 	
 	var searchResults = [];
+	var requestedArtist = "";
+	var requestedSong = "";
 
 	var opts = {
 		lines: 10, // The number of lines to draw
@@ -59,21 +61,31 @@ $(document).ready(function() {
 	function luckySuccess(data) {
 		spinner.stop();
 		clearInput();
+		showSuccessBar("Playing: " + data.artistName + " - " + data.songName);
 	};
 
 	function luckyFailure() {
 		spinner.stop();
 		clearInput();
+		showErrorBar("There was an error. Try again.");
 	};
 
 	function playSuccess(data) {
 		spinner.stop();
+		clearInput();
 		$('.carousel').carousel('prev');
+		if(data.success) {
+			showSuccessBar("Success!");
+		}
+		else {
+			showErrorBar("There was an error. Try again.")
+		}
 	};
 
 	function playFailure() {
 		spinner.stop();
 		clearInput();
+		showErrorBar("There was an error. Try again.")
 	};
 
 	function searchSuccess(data) {
@@ -89,6 +101,7 @@ $(document).ready(function() {
 	function searchFailure() {
 		spinner.stop();
 		clearInput();
+		showErrorBar("There was an error. Try again.")
 	};
 
 	function populateSearchResults() {
@@ -116,23 +129,52 @@ $(document).ready(function() {
 			
 		$("#search-results").html(searchResultsHtml);
 		$(".result-panel").on("click", function(event){
-		spinner.spin(document.getElementById('container'));
-		$.ajax({
-			url: './play',
-			type: "POST",
-			contentType: 'text/plain',
-			dataType: 'json',
-			data: $(this).attr('id')
+			spinner.spin(document.getElementById('container'));
+			$.ajax({
+				url: './play',
+				type: "POST",
+				contentType: 'text/plain',
+				dataType: 'json',
+				data: $(this).attr('id')
 			}).done(
 				playSuccess
 			).fail(
 				playFailure
 			);
+
 		});
 	};
 
 	function clearInput() {
 		$("#txt-input").val("");
+	};
+
+	function showErrorBar(message) {
+		showNotificationBar(message, 3000, "#cc0000", "#ffffff", 40);
+	};
+
+	function showSuccessBar(message) {
+		showNotificationBar(message, 3000, "#4ca64c", "#ffffff", 40);
+	};
+
+	function showNotificationBar(message, duration, bgColor, txtColor, height) {
+ 
+	    /*set default values*/
+	    duration = typeof duration !== 'undefined' ? duration : 3000;
+	    bgColor = typeof bgColor !== 'undefined' ? bgColor : "#F4E0E1";
+	    txtColor = typeof txtColor !== 'undefined' ? txtColor : "#A42732";
+	    height = typeof height !== 'undefined' ? height : 40;
+	    /*create the notification bar div if it doesn't exist*/
+	    if ($('#notification-bar').size() == 0) {
+	        var HTMLmessage = "<div class='notification-message' style='text-align:center; line-height: " + height + "px;'> " + message + " </div>";
+	        $('body').prepend("<div id='notification-bar' style='display:none; width:100%; height:" + height + "px; background-color: " + bgColor + "; position: fixed; z-index: 100; color: " + txtColor + ";border-bottom: 1px solid " + txtColor + ";'>" + HTMLmessage + "</div>");
+	    }
+	    /*animate the bar*/
+	    $('#notification-bar').slideDown(function() {
+	        setTimeout(function() {
+	            $('#notification-bar').slideUp(function() {});
+	        }, duration);
+	    });
 	};
 
 	$('.carousel').carousel({
