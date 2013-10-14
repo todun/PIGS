@@ -24,16 +24,19 @@
 
   <body>
 
-    <div class="container">
+    <div class="container" id="container">
 
       <div id="carousel-pigs" class="carousel slide">
         <div class="carousel-inner">
 
           <div class="item active">
             <div class="form-pigs">
-              <h2 class="form-pigs-heading">Search for music</h2>
+              <h2 class="form-pigs-heading">PIGS</h2>
               <input type="text" class="form-control" placeholder="Artist and song" id="txt_input" autofocus>
-              <button class="btn btn-lg btn-primary btn-block" id="btn_search">Search</button>
+              <button class="btn btn-lg btn-primary btn-block has-spinner" id="btn_search">
+                Search
+              <span class="spinner"><i class="icon-spin icon-refresh"></i></span>
+            </button>
               <button class="btn btn-lg btn-primary btn-block" id="btn_lucky">I'm Feeling Lucky</button>
             </div>
           </div>
@@ -52,6 +55,7 @@
 
     <!-- Bootstrap core JavaScript -->
     <script src="./js/jquery-2.0.3.min.js"></script>
+    <script src="./js/spin.min.js"></script>
     <script src="./js/PIGS.js"></script>
     <script src="./js/bootstrap.min.js"></script>
   </body>

@@ -15,7 +15,12 @@ end
 if $0 == __FILE__ then
 
 	# Create the server
-	server = WEBrick::HTTPServer.new(:Port=>port)
+	mime_types = WEBrick::HTTPUtils::DefaultMimeTypes
+	mime_types.store 'js', 'application/javascript'
+	server = WEBrick::HTTPServer.new(
+		:Port => port,
+		:MimeTypes => mime_types
+		)
 	ip = IPSocket.getaddress(Socket.gethostname)
 
 	# Create a tuner
