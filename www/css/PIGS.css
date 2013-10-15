@@ -43,3 +43,14 @@ body {
 .result-icon {
   float:right;
 }
+
+.controls {
+  margin-left:auto;
+  margin-right:auto;
+  width:80%;
+  text-align: center;
+}
+
+.glyphicon-remove {
+  margin-left:20px;
+}

@@ -28,7 +28,7 @@ $(document).ready(function() {
 		spinner.spin(document.getElementById('container'));
 		$.ajax({
 			url: './lucky',
-			type: "POST",
+			type: 'POST',
 			contentType: 'text/plain',
 			dataType: 'json',
 			data: $("#txt-input").val()
@@ -43,7 +43,7 @@ $(document).ready(function() {
 		spinner.spin(document.getElementById('container'));
 		$.ajax({
 			url: './search',
-			type: "POST",
+			type: 'POST',
 			contentType: 'text/plain',
 			dataType: 'json',
 			data: $("#txt-input").val()
@@ -51,6 +51,36 @@ $(document).ready(function() {
 			searchSuccess
 		).fail(
 			searchFailure
+		);
+	});
+
+	$(".glyphicon-pause").on("click", function(event){
+		spinner.spin(document.getElementById('container'));
+		$.ajax({
+			url: './control',
+			type: 'POST',
+			contentType: 'text/plain',
+			dataType: 'json',
+			data: 'pause_unpause'
+		}).done(
+			controlSuccess
+		).fail(
+			controlFailure
+		);
+	});
+
+	$(".glyphicon-remove").on("click", function(event){
+		spinner.spin(document.getElementById('container'));
+		$.ajax({
+			url: './control',
+			type: 'POST',
+			contentType: 'text/plain',
+			dataType: 'json',
+			data: 'stop'
+		}).done(
+			controlSuccess
+		).fail(
+			controlFailure
 		);
 	});
 
@@ -73,6 +103,23 @@ $(document).ready(function() {
 		spinner.stop();
 		clearInput();
 		showErrorBar("There was an error. Try again.");
+	};
+
+	function controlSuccess(data) {
+		spinner.stop();
+		clearInput();
+		if(data.success) {
+			showSuccessBar("Success!");
+		}
+		else {
+			showErrorBar("There was an error. Try again.")
+		}
+	};
+
+	function controlFailure() {
+		spinner.stop();
+		clearInput();
+		showErrorBar("There was an error. Try again.")
 	};
 
 	function playSuccess(data) {
