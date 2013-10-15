@@ -161,3 +161,18 @@ __Response:__
 	"success":true
 }
 ```
+
+## FAQ
+
+### Does PIGS scale?
+No. It's a simple WEBRick servlet. Probably best to only use this in your home for your own convenience.
+
+### Is it secure?
+No. You're sending plain text back and forth over HTTP.
+
+### Do I have to run PIGS on a Raspberry Pi?
+No. I created this project to run on my Raspberry Pi, but I've also run it on an Ubuntu box and OS X.
+
+## A Matt Hodges project
+
+This project is maintained by [@hodgesmr](http://twitter.com/hodgesmr)
