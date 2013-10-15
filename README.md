@@ -30,7 +30,7 @@ If you wish to create your own application to interact with PIGS, you can use th
 
 ### Search
 
-Asks PIGS for search results based on a query string
+Asks PIGS for search results based on a query string. Returns a JSON array of the results, or null.
 
 __Request:__
 ```javascript
@@ -95,7 +95,7 @@ __Response:__
 
 ### Lucky
 
-Asks PIGS to play a song based on a query string
+Asks PIGS to play a song based on a query string. Returns a JSON object of the song, or null.
 
 __Request:__
 ```javascript
@@ -122,7 +122,7 @@ __Response:__
 
 ### Play
 
-Asks PIGS to play a song based on an ID
+Asks PIGS to play a song based on an ID. Returns a JSON encoded success messsage.
 
 __Request:__
 ```javascript
@@ -143,7 +143,7 @@ __Response:__
 
 ### Control
 
-Asks PIGS to execute a playback command. The currently supported commands are `stop` and `pause_unpause`.
+Asks PIGS to execute a playback command. The currently supported commands are `stop` and `pause_unpause`. Returns a JSON encoded success message.
 
 __Request:__
 ```javascript
