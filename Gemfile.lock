@@ -1,6 +1,9 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    active_support (3.0.0)
+      activesupport (= 3.0.0)
+    activesupport (3.0.0)
     grooveshark (0.2.8.2)
       json (>= 1.4.6)
       rest-client (>= 1.5.1)
@@ -19,4 +22,5 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  active_support
   grooveshark
