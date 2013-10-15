@@ -173,6 +173,12 @@ No. You're sending plain text back and forth over HTTP.
 ### Do I have to run PIGS on a Raspberry Pi?
 No. I created this project to run on my Raspberry Pi, but I've also run it on an Ubuntu box and OS X.
 
+### Why do I get a Grooveshark error when trying to run PIGS?
+The API is constantly changing. Thankfully, the grooveshark gem is also actively maintained. Try updating the gem. If that doesn't work, feel free to log an issue.
+```sh
+gem update grooveshark
+```
+
 ## A Matt Hodges project
 
 This project is maintained by [@hodgesmr](http://twitter.com/hodgesmr)
