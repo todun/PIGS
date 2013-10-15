@@ -1,4 +1,5 @@
 GEM
+  remote: https://rubygems.org/
   specs:
     grooveshark (0.2.8.2)
       json (>= 1.4.6)
