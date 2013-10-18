@@ -22,7 +22,7 @@ ruby PIGSServer.rb
 
 You may also specify a port as a runtime argument. The default port is [9001](http://www.youtube.com/watch?v=SiMHTK15Pik).
 
-Once PIGS is running, you can either use its web interface or interact with its exposed methods directly.
+Once PIGS is running, you can either use its web interface (simply point a browser at the PIGS host) or interact with its exposed methods directly.
 
 ## API
 
