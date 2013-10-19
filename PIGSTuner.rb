@@ -84,7 +84,7 @@ class PIGSTuner
 		query.strip!
 
 		# Ask Grooveshark for a song
-		sogns = []
+		songs = []
 		begin
 			songs = @grooveshark_client.search_songs(query)
 		rescue Exception
