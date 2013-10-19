@@ -27,6 +27,11 @@ class PIGSTuner
 	# Asks Grooveshark for a song url and plays it
 	# Returns JSON encoded success message
 	def play_song_with_id(id)
+		# Check if we need a new Grooveshark session
+		if session_expired?
+			init_grooveshark
+		end
+		
 		begin
 			@mutex.synchronize do
 				unless @child.nil? then
