@@ -1,6 +1,6 @@
 # PIGS
 
-PIGS _(Pi Grooveshark)_ is both a server-side and client side application that leverages the [Grooveshark RubyGem](http://rubygems.org/gems/grooveshark) to create a convenient way to play music on-demand. You can run PIGS on any Unix-like host; I created this project to run on a Raspberry Pi.
+PIGS _(Pi Grooveshark)_ is both a server-side and client-side application that leverages the [Grooveshark RubyGem](http://rubygems.org/gems/grooveshark) to create a convenient way to play music on-demand. You can run PIGS on any Unix-like host; I created this project to run on a Raspberry Pi.
 
 ## Installation
 PIGS requires [Ruby](http://rayhightower.com/blog/2012/12/03/ruby-on-raspberry-pi/) and [Bundler](http://bundler.io/) to run. My Raspbian install didn't come with those out of the box, so you may need to install those first to get eveything up and running.
