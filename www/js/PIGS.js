@@ -84,6 +84,36 @@ $(document).ready(function() {
 		);
 	});
 
+    $(".glyphicon-volume-down").on("click", function(event){
+		spinner.spin(document.getElementById('container'));
+		$.ajax({
+			url: './control',
+			type: 'POST',
+			contentType: 'text/plain',
+			dataType: 'json',
+			data: 'volume_down'
+		}).done(
+			controlSuccess
+		).fail(
+			controlFailure
+		);
+	});
+
+    $(".glyphicon-volume-up").on("click", function(event){
+		spinner.spin(document.getElementById('container'));
+		$.ajax({
+			url: './control',
+			type: 'POST',
+			contentType: 'text/plain',
+			dataType: 'json',
+			data: 'volume_up'
+		}).done(
+			controlSuccess
+		).fail(
+			controlFailure
+		);
+	});
+
 	$("#btn-back").on("click", function(event){
 		$('.carousel').carousel('prev');
 	});

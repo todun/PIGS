@@ -110,7 +110,9 @@ class PIGSTuner
   def execute_tuner_command(command)
     commands = {
       "pause_unpause" => " ",
-      "stop" => "q"
+      "stop" => "q",
+      "volume_up" => "0",
+      "volume_down" => "9"
     }
     if commands.has_key?(command)
       @write_io.write "#{commands[command]}"

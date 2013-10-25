@@ -143,7 +143,7 @@ __Response:__
 
 ### Control
 
-Asks PIGS to execute a playback command. The currently supported commands are `stop` and `pause_unpause`. Returns a JSON encoded success message.
+Asks PIGS to execute a playback command. The currently supported commands are `stop`, `pause_unpause`, `volume_down`, and `volume_up`. Returns a JSON encoded success message.
 
 __Request:__
 ```javascript
